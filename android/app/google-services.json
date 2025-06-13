@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "844563512875",
+    "project_id": "clothes-fc9f2",
+    "storage_bucket": "clothes-fc9f2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844563512875:android:768c02b3c39dc5ab6ab46e",
+        "android_client_info": {
+          "package_name": "com.example.clothes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp5zLCzw0smtI3d0jzgoqsfVRPZMaM-iE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:844563512875:android:d32b7d434c1c10d86ab46e",
+        "android_client_info": {
+          "package_name": "com.example.tennis_reminder_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp5zLCzw0smtI3d0jzgoqsfVRPZMaM-iE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
