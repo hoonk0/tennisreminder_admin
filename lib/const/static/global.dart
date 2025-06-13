@@ -20,6 +20,7 @@ class Global {
   /// throttler
   static final CustomThrottler throttler = CustomThrottler(milliseconds: 1000);
 
+
 /*  static  List<ModelQuestionWritten> vnListModelQuestionWritten = [];
   static  List<ModelQuestionTest> vnListModelQuestionPsychology = [];
   static  List<ModelQuestionTest> vnListModelQuestionHealth = [];

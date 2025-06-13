@@ -10,6 +10,7 @@ import '../component/custom_drawer.dart';
 import '../component/logout_bar.dart';
 import '../component/menu_category_bar.dart';
 import '../tab/0_tab_dash_board.dart';
+import '../tab/1_tab_tennis_court.dart';
 
 class RouteMain extends StatefulWidget {
   const RouteMain({super.key});
@@ -25,7 +26,7 @@ class _RouteMainState extends State<RouteMain> {
   void initState() {
     super.initState();
 
-   // _getInitialValue();
+   _getInitialValue();
   }
 
   @override
@@ -73,13 +74,11 @@ class _RouteMainState extends State<RouteMain> {
                                             return const TabDashBoard();
                                           }
 
-                  /*                        /// 필기문제 관리
-                                          else if (renderTab == mapCategoryMenuTab[tabQuestionWritten]) {
-                                            return TabQuestionWritten(
-                                              vnIsLoading: vnIsLoading,
-                                            );
+                                          ///테니스코트 관리
+                                         else if (renderTab == mapCategoryMenuTab[tabTennisCourt]) {
+                                            return const TabTennisCourt();
                                           }
-
+                                          /*
                                           /// 실기문제 관리
                                           else if (renderTab == mapCategoryMenuTab[tabQuestionPractical]) {
                                             return TabQuestionPractical(
@@ -172,7 +171,7 @@ class _RouteMainState extends State<RouteMain> {
     );
   }
 
-/*  Future<void> _getInitialValue() async {
+  Future<void> _getInitialValue() async {
     final renderTab = Global.localStorage[keyRenderTab];
     final isShowMenuBar = Global.localStorage[keyIsShowMenuBar];
 
@@ -180,5 +179,5 @@ class _RouteMainState extends State<RouteMain> {
 
     final isShow = isShowMenuBar != null ? bool.parse(isShowMenuBar) : true;
     Global.vnIsShowMenuBar.value = isShow;
-  }*/
+  }
 }

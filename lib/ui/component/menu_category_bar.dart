@@ -33,18 +33,9 @@ class MenuCategoryBar extends StatelessWidget {
                       decoration: const BoxDecoration(
                         color: colorPoint,
                       ),
-                      child: Row(
-                        children: [
-                          Image.asset(
-                            'assets/logos/logo.png',
-                            height: 30,
-                          ),
-                          Gaps.h16,
-                          Text(
-                            '관리자',
-                            style: TS.s20w600(colorBlack),
-                          ),
-                        ],
+                      child: Text(
+                        '관리자',
+                        style: TS.s20w600(colorBlack),
                       ),
                     ),
                   ),
