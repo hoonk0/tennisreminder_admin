@@ -41,48 +41,53 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD5XgdALLiLCT9Ld9P7JNW5JUqgqxEPEyc',
-    appId: '1:844563512875:web:13e0d96073db71b16ab46e',
-    messagingSenderId: '844563512875',
-    projectId: 'clothes-fc9f2',
-    authDomain: 'clothes-fc9f2.firebaseapp.com',
-    storageBucket: 'clothes-fc9f2.firebasestorage.app',
-    measurementId: 'G-FSWZDQ2FGZ',
+    apiKey: 'AIzaSyBxFdpwZ8xVKKxVABuYX_8Mtuz1BqESTEo',
+    appId: '1:334096525:web:b4fa74500e1611902edac4',
+    messagingSenderId: '334096525',
+    projectId: 'tennisreminder-ecf66',
+    authDomain: 'tennisreminder-ecf66.firebaseapp.com',
+    storageBucket: 'tennisreminder-ecf66.firebasestorage.app',
+    measurementId: 'G-DGVXR4RSG5',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCp5zLCzw0smtI3d0jzgoqsfVRPZMaM-iE',
-    appId: '1:844563512875:android:d32b7d434c1c10d86ab46e',
-    messagingSenderId: '844563512875',
-    projectId: 'clothes-fc9f2',
-    storageBucket: 'clothes-fc9f2.firebasestorage.app',
+    apiKey: 'AIzaSyDgITAhBu0-Ttbf0sz7BgfGm2H-ywg6OBw',
+    appId: '1:334096525:android:2e5078088825f0522edac4',
+    messagingSenderId: '334096525',
+    projectId: 'tennisreminder-ecf66',
+    storageBucket: 'tennisreminder-ecf66.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBcTwD-h-RgTiTsu2GJfx0MZQHYTS8Qs_I',
-    appId: '1:844563512875:ios:e68ae8d86c97712e6ab46e',
-    messagingSenderId: '844563512875',
-    projectId: 'clothes-fc9f2',
-    storageBucket: 'clothes-fc9f2.firebasestorage.app',
+    apiKey: 'AIzaSyAC4AGKpBPYL20oLTjxAO8OWWN2KWb4xsg',
+    appId: '1:334096525:ios:7ad4af2c35500e242edac4',
+    messagingSenderId: '334096525',
+    projectId: 'tennisreminder-ecf66',
+    storageBucket: 'tennisreminder-ecf66.firebasestorage.app',
+    androidClientId: '334096525-rrm2ft4g83lbhun79qmrkbgs2v2pb0hf.apps.googleusercontent.com',
+    iosClientId: '334096525-o7v0fsdf329k9875h2k3cidrkd3oo965.apps.googleusercontent.com',
     iosBundleId: 'com.example.tennisReminderAdmin',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBcTwD-h-RgTiTsu2GJfx0MZQHYTS8Qs_I',
-    appId: '1:844563512875:ios:e68ae8d86c97712e6ab46e',
-    messagingSenderId: '844563512875',
-    projectId: 'clothes-fc9f2',
-    storageBucket: 'clothes-fc9f2.firebasestorage.app',
+    apiKey: 'AIzaSyAC4AGKpBPYL20oLTjxAO8OWWN2KWb4xsg',
+    appId: '1:334096525:ios:7ad4af2c35500e242edac4',
+    messagingSenderId: '334096525',
+    projectId: 'tennisreminder-ecf66',
+    storageBucket: 'tennisreminder-ecf66.firebasestorage.app',
+    androidClientId: '334096525-rrm2ft4g83lbhun79qmrkbgs2v2pb0hf.apps.googleusercontent.com',
+    iosClientId: '334096525-o7v0fsdf329k9875h2k3cidrkd3oo965.apps.googleusercontent.com',
     iosBundleId: 'com.example.tennisReminderAdmin',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyD5XgdALLiLCT9Ld9P7JNW5JUqgqxEPEyc',
-    appId: '1:844563512875:web:a4498d5fd9ea5e2f6ab46e',
-    messagingSenderId: '844563512875',
-    projectId: 'clothes-fc9f2',
-    authDomain: 'clothes-fc9f2.firebaseapp.com',
-    storageBucket: 'clothes-fc9f2.firebasestorage.app',
-    measurementId: 'G-1M46T97DL0',
+    apiKey: 'AIzaSyBxFdpwZ8xVKKxVABuYX_8Mtuz1BqESTEo',
+    appId: '1:334096525:web:3dfd4818d9cdaf132edac4',
+    messagingSenderId: '334096525',
+    projectId: 'tennisreminder-ecf66',
+    authDomain: 'tennisreminder-ecf66.firebaseapp.com',
+    storageBucket: 'tennisreminder-ecf66.firebasestorage.app',
+    measurementId: 'G-Z70Y7WG3YH',
   );
+
 }

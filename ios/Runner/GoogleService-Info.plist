@@ -2,18 +2,24 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>334096525-o7v0fsdf329k9875h2k3cidrkd3oo965.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.334096525-o7v0fsdf329k9875h2k3cidrkd3oo965</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>334096525-rrm2ft4g83lbhun79qmrkbgs2v2pb0hf.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBcTwD-h-RgTiTsu2GJfx0MZQHYTS8Qs_I</string>
+	<string>AIzaSyAC4AGKpBPYL20oLTjxAO8OWWN2KWb4xsg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>844563512875</string>
+	<string>334096525</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.example.tennisReminderAdmin</string>
 	<key>PROJECT_ID</key>
-	<string>clothes-fc9f2</string>
+	<string>tennisreminder-ecf66</string>
 	<key>STORAGE_BUCKET</key>
-	<string>clothes-fc9f2.firebasestorage.app</string>
+	<string>tennisreminder-ecf66.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:844563512875:ios:e68ae8d86c97712e6ab46e</string>
+	<string>1:334096525:ios:7ad4af2c35500e242edac4</string>
 </dict>
 </plist>

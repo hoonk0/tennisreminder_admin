@@ -12,7 +12,7 @@ class Global {
   static final localStorage = html.window.localStorage;
 
   /// category menu 관련 -> 보여줄 tab
-  static final ValueNotifier<String> vnRenderTab = ValueNotifier(tabDashBoard);
+  static final ValueNotifier<String> vnRenderTab = ValueNotifier(tabTennisCourt);
 
   /// category menu 보임/숨김
   static final ValueNotifier<bool> vnIsShowMenuBar = ValueNotifier(true);

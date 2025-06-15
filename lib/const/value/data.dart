@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:tennis_reminder_admin/const/value/tab.dart';
 
 const List<String> listCategoryMenu = ['코트 관리','유저관리'];
 
@@ -9,6 +10,9 @@ List<IconData> listCategoryIcon = [
 ];
 
 const Map<String, String> mapCategoryMenuTab = {
+  tabTennisCourt: '코트 관리',
+  //tabUser:'유저 관리'
+
  /* tabQuestionWritten: '필기문제 관리',
   tabQuestionPractical: '실기문제 관리',
   tabTestPsychological: '심리테스트 관리',

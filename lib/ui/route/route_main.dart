@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:tennisreminder_core/const/value/colors.dart';
 import 'package:tennisreminder_core/const/value/gaps.dart';
+import 'package:tennisreminder_core/const/value/keys.dart';
 import 'package:tennisreminder_core/const/value/text_style.dart';
 import '../../const/static/global.dart';
 import '../../const/value/data.dart';
@@ -56,7 +57,7 @@ class _RouteMainState extends State<RouteMain> {
                     builder: (context, constraints) {
                       return Column(
                         children: [
-                          LogoutBar(),
+                          //LogoutBar(),
                           Expanded(
                             child: SingleChildScrollView(
                               child: ConstrainedBox(
@@ -69,6 +70,7 @@ class _RouteMainState extends State<RouteMain> {
                                       ValueListenableBuilder(
                                         valueListenable: Global.vnRenderTab,
                                         builder: (context, renderTab, child) {
+                                          debugPrint('현재 renderTab: $renderTab');
                                           /// 대시보드
                                           if (renderTab == mapCategoryMenuTab[tabDashBoard]) {
                                             return const TabDashBoard();
@@ -78,6 +80,7 @@ class _RouteMainState extends State<RouteMain> {
                                          else if (renderTab == mapCategoryMenuTab[tabTennisCourt]) {
                                             return const TabTennisCourt();
                                           }
+
                                           /*
                                           /// 실기문제 관리
                                           else if (renderTab == mapCategoryMenuTab[tabQuestionPractical]) {
@@ -175,7 +178,8 @@ class _RouteMainState extends State<RouteMain> {
     final renderTab = Global.localStorage[keyRenderTab];
     final isShowMenuBar = Global.localStorage[keyIsShowMenuBar];
 
-    Global.vnRenderTab.value = renderTab ?? tabDashBoard;
+    // Always start on the "코트 관리" (tabTennisCourt) tab
+    Global.vnRenderTab.value = tabTennisCourt;
 
     final isShow = isShowMenuBar != null ? bool.parse(isShowMenuBar) : true;
     Global.vnIsShowMenuBar.value = isShow;

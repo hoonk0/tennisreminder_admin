@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart' show Firebase;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:tennis_reminder_admin/ui/route/route_root.dart';
@@ -17,7 +17,6 @@ void main() async {
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  await _testFirebaseConnection();
 
   setPathUrlStrategy();
 
@@ -28,14 +27,6 @@ void main() async {
   runApp(const RouteRoot());
 }
 
-Future<void> _testFirebaseConnection() async {
-  try {
-    await FirebaseFirestore.instance.collection('test_connection').add({'ping': 'pong'});
-    debugPrint('✅ Firebase 연결 성공!');
-  } catch (e) {
-    debugPrint('❌ Firebase 연결 실패: $e');
-  }
-}
 
 Future<void> autoLogin() async {
   const String appVersion = '1.0.1 (1)';
