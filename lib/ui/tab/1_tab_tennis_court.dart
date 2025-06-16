@@ -218,7 +218,7 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
           debugPrint('🚀 row[$i] raw values: ${row.map((e) => e?.value).toList()}');
 
           final model = ModelCourt(
-            uid: row[0]?.value.toString() ?? '',
+            uid: '', // will be updated after Firestore .add()
             dateCreate: Timestamp.fromMillisecondsSinceEpoch(int.parse(row[1]?.value.toString() ?? '0')),
             latitude: double.tryParse(row[2]?.value.toString() ?? '0') ?? 0.0,
             longitude: double.tryParse(row[3]?.value.toString() ?? '0') ?? 0.0,
@@ -237,8 +237,10 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
           );
           debugPrint('✅ ModelCourt[$i]: ${model.toJson()}');
 
-          await FirebaseFirestore.instance.collection(keyCourt).doc(model.uid).set(model.toJson());
-          debugPrint('📦 Firestore 저장 완료: ${model.uid}');
+          final docRef = await FirebaseFirestore.instance.collection(keyCourt).add(model.toJson());
+          final autoUid = docRef.id;
+          await docRef.update({keyUid: autoUid});
+          debugPrint('📦 Firestore 저장 완료: $autoUid');
         } catch (e, s) {
           debugPrint('❌ Error on row $i: $e');
           debugPrint('🔍 Stack: $s');
