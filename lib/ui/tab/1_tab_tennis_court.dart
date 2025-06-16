@@ -1,4 +1,10 @@
 import 'dart:typed_data';
+import 'dart:convert';
+import 'package:file_picker/file_picker.dart';
+import 'package:excel/excel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tennisreminder_core/const/model/model_court.dart';
+import 'package:tennisreminder_core/const/value/keys.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cached_network_image_platform_interface/cached_network_image_platform_interface.dart';
@@ -42,6 +48,14 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: _uploadCourtExcel,
+              child: const Text('엑셀 업로드'),
+            ),
+          ),
+          SizedBox(height: 8),
 /*          ElevatedButton(
             onPressed: () async {
               final newDoc = {
@@ -185,6 +199,54 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
         ],
       ),
     );
+  }
+
+  Future<void> _uploadCourtExcel() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['xlsx'],
+    );
+    if (result != null && result.files.single.bytes != null) {
+      final bytes = result.files.single.bytes!;
+      final excel = Excel.decodeBytes(bytes);
+      final sheet = excel.tables[excel.tables.keys.first];
+      if (sheet == null) return;
+
+      for (int i = 1; i < sheet.rows.length; i++) {
+        final row = sheet.rows[i];
+        try {
+          debugPrint('🚀 row[$i] raw values: ${row.map((e) => e?.value).toList()}');
+
+          final model = ModelCourt(
+            uid: row[0]?.value.toString() ?? '',
+            dateCreate: Timestamp.fromMillisecondsSinceEpoch(int.parse(row[1]?.value.toString() ?? '0')),
+            latitude: double.tryParse(row[2]?.value.toString() ?? '0') ?? 0.0,
+            longitude: double.tryParse(row[3]?.value.toString() ?? '0') ?? 0.0,
+            courtName: row[4]?.value.toString() ?? '',
+            courtAddress: row[5]?.value.toString() ?? '',
+            courtInfo: row[6]?.value.toString() ?? '',
+            reservationUrl: row[7]?.value.toString() ?? '',
+            likedUserUids: [],
+            imageUrls: [],
+            extraInfo: null,
+            courtDistrict: (row[5]?.value.toString().split(' ').length ?? 0) > 1
+                ? row[5]?.value.toString().split(' ')[1]
+                : '',
+            courtAlarms: null,
+            weatherInfo: null,
+          );
+          debugPrint('✅ ModelCourt[$i]: ${model.toJson()}');
+
+          await FirebaseFirestore.instance.collection(keyCourt).doc(model.uid).set(model.toJson());
+          debugPrint('📦 Firestore 저장 완료: ${model.uid}');
+        } catch (e, s) {
+          debugPrint('❌ Error on row $i: $e');
+          debugPrint('🔍 Stack: $s');
+        }
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('업로드 완료')));
+    }
   }
 
   void _pickFile(ValueNotifier<String?> vnImgUrl) async {
