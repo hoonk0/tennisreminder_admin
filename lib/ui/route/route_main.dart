@@ -57,7 +57,7 @@ class _RouteMainState extends State<RouteMain> {
                     builder: (context, constraints) {
                       return Column(
                         children: [
-                          //LogoutBar(),
+                          LogoutBar(),
                           Expanded(
                             child: SingleChildScrollView(
                               child: ConstrainedBox(
@@ -78,7 +78,7 @@ class _RouteMainState extends State<RouteMain> {
 
                                           ///테니스코트 관리
                                          else if (renderTab == mapCategoryMenuTab[tabTennisCourt]) {
-                                            return const TabTennisCourt();
+                                            return TabTennisCourt(vnIsLoading: vnIsLoading,);
                                           }
 
                                           /*
