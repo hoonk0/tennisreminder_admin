@@ -103,6 +103,8 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
                   return null;
                 }
               }).whereType<ModelCourt>().toList();
+              // Sort courts by courtName before displaying
+              courts.sort((a, b) => a.courtName.compareTo(b.courtName));
 
 
               return Column(
