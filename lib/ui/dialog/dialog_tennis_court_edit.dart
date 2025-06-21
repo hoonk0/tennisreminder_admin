@@ -1,7 +1,10 @@
 import 'dart:developer' as Utils;
-import 'dart:html' as html;
 import 'dart:typed_data';
 
+import 'package:tennisreminder_core/const/model/model_court_reservation.dart';
+import 'package:tennisreminder_core/const/value/enum.dart';
+import 'package:tennisreminder_core/utils_enum/utils_enum.dart';
+import 'package:universal_html/html.dart' as html;
 import 'package:uuid/uuid.dart';
 
 import 'package:flutter/material.dart';
@@ -32,8 +35,17 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
   late final TextEditingController infoController;
   late final TextEditingController latController;
   late final TextEditingController lngController;
+  late final TextEditingController courtInfo1Controller;
+  late final TextEditingController courtInfo2Controller;
+  late final TextEditingController courtInfo3Controller;
+  late final TextEditingController courtInfo4Controller;
+  late final TextEditingController reservationScheduleController;
+  late final TextEditingController reservationHourController;
+  late final TextEditingController reservationDayController;
+  late final TextEditingController daysBeforePlayController;
 
   final ValueNotifier<String?> vnImgUrl = ValueNotifier(null);
+  late final ValueNotifier<ReservationRuleType?> vnRuleType;
 
   @override
   void initState() {
@@ -45,7 +57,16 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
     infoController = TextEditingController(text: court.courtInfo);
     latController = TextEditingController(text: court.latitude.toString());
     lngController = TextEditingController(text: court.longitude.toString());
+    courtInfo1Controller = TextEditingController(text: court.courtInfo1 ?? '');
+    courtInfo2Controller = TextEditingController(text: court.courtInfo2 ?? '');
+    courtInfo3Controller = TextEditingController(text: court.courtInfo3 ?? '');
+    courtInfo4Controller = TextEditingController(text: court.courtInfo4 ?? '');
+    reservationScheduleController = TextEditingController(text: court.reservationSchedule ?? '');
+    reservationHourController = TextEditingController(text: court.reservationInfo?.reservationHour?.toString() ?? '');
+    reservationDayController = TextEditingController(text: court.reservationInfo?.reservationDay?.toString() ?? '');
+    daysBeforePlayController = TextEditingController(text: court.reservationInfo?.daysBeforePlay?.toString() ?? '');
     vnImgUrl.value = (court.imageUrls!.isNotEmpty) ? court.imageUrls!.first : null;
+    vnRuleType = ValueNotifier(widget.court.reservationInfo?.reservationRuleType);
   }
 
   @override
@@ -56,7 +77,16 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
     infoController.dispose();
     latController.dispose();
     lngController.dispose();
+    courtInfo1Controller.dispose();
+    courtInfo2Controller.dispose();
+    courtInfo3Controller.dispose();
+    courtInfo4Controller.dispose();
+    reservationScheduleController.dispose();
+    reservationHourController.dispose();
+    reservationDayController.dispose();
+    daysBeforePlayController.dispose();
     vnImgUrl.dispose();
+    vnRuleType.dispose();
     super.dispose();
   }
 
@@ -74,11 +104,64 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
               const SizedBox(height: 16),
               TextField(controller: nameController, decoration: const InputDecoration(labelText: '코트명')),
               TextField(controller: addressController, decoration: const InputDecoration(labelText: '주소')),
+              // --- Reservation Info Section ---
+              const SizedBox(height: 24),
+              ValueListenableBuilder<ReservationRuleType?>(
+                valueListenable: vnRuleType,
+                builder: (context, value, child) {
+                  return DropdownButtonFormField<ReservationRuleType>(
+                    value: value,
+                    items: ReservationRuleType.values.map((rule) {
+                      return DropdownMenuItem(
+                        value: rule,
+                        child: Text(UtilsEnum.getNameFromReservationRuleType(rule)),
+                      );
+                    }).toList(),
+                    onChanged: (val) => vnRuleType.value = val,
+                    decoration: const InputDecoration(labelText: '예약 규칙'),
+                  );
+                },
+              ),
+              Builder(
+                builder: (context) {
+                  final court = widget.court;
+                  final reservationInfo = court.reservationInfo;
+                  if (reservationInfo == null) return const SizedBox.shrink();
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: reservationHourController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: '예약 시간 (시)'),
+                      ),
+                      TextField(
+                        controller: reservationDayController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: '예약 일자 (일) - 매번특정일의 경우만 작성'),
+                      ),
+                      TextField(
+                        controller: daysBeforePlayController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: '플레이 기준 며칠 전 - 플레이어 기준 며칠전 경우만 작성'),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                  );
+                },
+              ),
               TextField(controller: urlController, decoration: const InputDecoration(labelText: '예약 링크')),
               TextField(controller: infoController, decoration: const InputDecoration(labelText: '코트 설명')),
+              // New fields for courtInfo1-4 and reservationSchedule
+              TextField(controller: courtInfo1Controller, decoration: const InputDecoration(labelText: '코트 정보1')),
+              TextField(controller: courtInfo2Controller, decoration: const InputDecoration(labelText: '코트 정보2')),
+              TextField(controller: courtInfo3Controller, decoration: const InputDecoration(labelText: '코트 정보3')),
+              TextField(controller: courtInfo4Controller, decoration: const InputDecoration(labelText: '코트 정보4')),
+              TextField(controller: reservationScheduleController, decoration: const InputDecoration(labelText: '예약 일정')),
               TextField(controller: latController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: '위도')),
               TextField(controller: lngController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: '경도')),
               const SizedBox(height: 24),
+              // --- Image Section moved below reservation info ---
               ValueListenableBuilder<String?>(
                 valueListenable: vnImgUrl,
                 builder: (context, imgUrl, child) {
@@ -123,6 +206,7 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
                 },
               ),
               const SizedBox(height: 24),
+
               ButtonBottom(
                 title: '저장',
                 onTap: _save,
@@ -203,9 +287,18 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
         keyCourtAddress: addressController.text,
         keyReservationUrl: urlController.text,
         keyCourtInfo: infoController.text,
+        'courtInfo1': courtInfo1Controller.text.isEmpty ? null : courtInfo1Controller.text,
+        'courtInfo2': courtInfo2Controller.text.isEmpty ? null : courtInfo2Controller.text,
+        'courtInfo3': courtInfo3Controller.text.isEmpty ? null : courtInfo3Controller.text,
+        'courtInfo4': courtInfo4Controller.text.isEmpty ? null : courtInfo4Controller.text,
+        'reservationSchedule': reservationScheduleController.text.isEmpty ? null : reservationScheduleController.text,
         keyLatitude: double.tryParse(latController.text) ?? 0.0,
         keyLongitude: double.tryParse(lngController.text) ?? 0.0,
         keyImageUrls: [vnImgUrl.value!],
+        keyReservationRuleType: vnRuleType.value?.name,
+        keyReservationHour: int.tryParse(reservationHourController.text),
+        keyReservationDay: int.tryParse(reservationDayController.text),
+        keyDaysBeforePlay: int.tryParse(daysBeforePlayController.text),
       });
       if (mounted) Navigator.of(context).pop();
       Utils.log('[OK] [코트 정보 수정 완료]');

@@ -4,6 +4,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tennisreminder_core/const/model/model_court.dart';
+import 'package:tennisreminder_core/const/model/model_court_reservation.dart';
+import 'package:tennisreminder_core/const/value/enum.dart';
 import 'package:tennisreminder_core/const/value/keys.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -156,34 +158,14 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
                                   icon: const Icon(Icons.close, color: Colors.red),
                                   tooltip: '코트 삭제',
                                   onPressed: () async {
-                                    final confirm = await showDialog<bool>(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text('삭제 확인'),
-                                        content: const Text('이 코트를 삭제하시겠습니까?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () => Navigator.of(context).pop(false),
-                                            child: const Text('취소'),
-                                          ),
-                                          TextButton(
-                                            onPressed: () => Navigator.of(context).pop(true),
-                                            child: const Text('삭제'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-
-                                    if (confirm == true) {
-                                      try {
-                                        await FirebaseFirestore.instance.collection(keyCourt).doc(court.uid).delete();
-                                        Utils.log.i('[OK] [코트 삭제 완료]');
-                                      } catch (e, s) {
-                                        Utils.log.f('[ERR] [코트 삭제 실패]\n$e\n$s');
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          const SnackBar(content: Text('코트 삭제 중 오류가 발생했습니다.')),
-                                        );
-                                      }
+                                    try {
+                                      await FirebaseFirestore.instance.collection(keyCourt).doc(court.uid).delete();
+                                      Utils.log.i('[OK] [코트 삭제 완료]');
+                                    } catch (e, s) {
+                                      Utils.log.f('[ERR] [코트 삭제 실패]\n$e\n$s');
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('코트 삭제 중 오류가 발생했습니다.')),
+                                      );
                                     }
                                   },
                                 ),
@@ -219,23 +201,58 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
         try {
           debugPrint('🚀 row[$i] raw values: ${row.map((e) => e?.value).toList()}');
 
+          // Excel columns: A-P (0-15)
+          final uuid = const Uuid();
+          final uid = row.length > 0 ? row[0]?.value?.toString().trim() : null;
+          final dateCreate = row.length > 1 ? row[1]?.value : null;
+          final latitude = row.length > 2 ? double.tryParse(row[2]?.value?.toString() ?? '0') ?? 0.0 : 0.0;
+          final longitude = row.length > 3 ? double.tryParse(row[3]?.value?.toString() ?? '0') ?? 0.0 : 0.0;
+          final courtName = row.length > 4 ? row[4]?.value?.toString().trim() : '';
+          final courtAddress = row.length > 5 ? row[5]?.value?.toString().trim() : '';
+          final courtInfo1 = row.length > 6 ? row[6]?.value?.toString().trim() : null;
+          final courtInfo2 = row.length > 7 ? row[7]?.value?.toString().trim() : null;
+          final courtInfo3 = row.length > 8 ? row[8]?.value?.toString().trim() : null;
+          final courtInfo4 = row.length > 9 ? row[9]?.value?.toString().trim() : null;
+          final reservationSchedule = row.length > 10 ? row[10]?.value?.toString().trim() : null;
+          final reservationRuleTypeIndex = row.length > 11 ? int.tryParse(row[11]?.value?.toString() ?? '') : null;
+          final reservationHour = row.length > 12 ? int.tryParse(row[12]?.value?.toString() ?? '') : null;
+          final reservationDay = row.length > 13 ? int.tryParse(row[13]?.value?.toString() ?? '') : null;
+          final daysBeforePlay = row.length > 14 ? int.tryParse(row[14]?.value?.toString() ?? '') : null;
+          final reservationUrl = row.length > 15 ? row[15]?.value?.toString().trim() : '';
+
+          final reservation = ModelCourtReservation(
+            uid: uuid.v4(),
+            reservationRuleType: ReservationRuleType.values[reservationRuleTypeIndex ?? 0],
+            reservationHour: reservationHour,
+            reservationDay: reservationDay,
+            daysBeforePlay: daysBeforePlay,
+            dateCreated: Timestamp.now(),
+          );
+
           final model = ModelCourt(
-            uid: '', // will be updated after Firestore .add()
-            dateCreate: Timestamp.fromMillisecondsSinceEpoch(int.parse(row[1]?.value.toString() ?? '0')),
-            latitude: double.tryParse(row[2]?.value.toString() ?? '0') ?? 0.0,
-            longitude: double.tryParse(row[3]?.value.toString() ?? '0') ?? 0.0,
-            courtName: row[4]?.value.toString() ?? '',
-            courtAddress: row[5]?.value.toString() ?? '',
-            courtInfo: row[6]?.value.toString() ?? '',
-            reservationUrl: row[7]?.value.toString() ?? '',
+            uid: (uid != null && uid.isNotEmpty) ? uid : uuid.v4(),
+            dateCreate: dateCreate != null
+                ? Timestamp.fromMillisecondsSinceEpoch(int.tryParse(dateCreate.toString()) ?? 0)
+                : Timestamp.now(),
+            latitude: latitude,
+            longitude: longitude,
+            courtName: courtName ?? '',
+            courtAddress: courtAddress ?? '',
+            courtInfo: '',
+            courtInfo1: courtInfo1,
+            courtInfo2: courtInfo2,
+            courtInfo3: courtInfo3,
+            courtInfo4: courtInfo4,
+            reservationSchedule: reservationSchedule,
+            reservationUrl: reservationUrl ?? '',
             likedUserUids: [],
             imageUrls: [],
-            extraInfo: null,
-            courtDistrict: (row[5]?.value.toString().split(' ').length ?? 0) > 1
-                ? row[5]?.value.toString().split(' ')[1]
+            courtDistrict: (courtAddress?.split(' ').length ?? 0) > 1
+                ? courtAddress?.split(' ')[1]
                 : '',
             courtAlarms: null,
             weatherInfo: null,
+            reservationInfo: reservation,
           );
           debugPrint('✅ ModelCourt[$i]: ${model.toJson()}');
 
