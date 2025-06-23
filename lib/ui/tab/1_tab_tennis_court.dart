@@ -201,7 +201,7 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
         try {
           debugPrint('🚀 row[$i] raw values: ${row.map((e) => e?.value).toList()}');
 
-          // Excel columns: A-P (0-15)
+          // Excel columns: A-P (0-15), possible Q,R for new fields
           final uuid = const Uuid();
           final uid = row.length > 0 ? row[0]?.value?.toString().trim() : null;
           final dateCreate = row.length > 1 ? row[1]?.value : null;
@@ -218,7 +218,10 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
           final reservationHour = row.length > 12 ? int.tryParse(row[12]?.value?.toString() ?? '') : null;
           final reservationDay = row.length > 13 ? int.tryParse(row[13]?.value?.toString() ?? '') : null;
           final daysBeforePlay = row.length > 14 ? int.tryParse(row[14]?.value?.toString() ?? '') : null;
-          final reservationUrl = row.length > 15 ? row[15]?.value?.toString().trim() : '';
+          // New fields for reservationWeekNumber and reservationWeekday
+          final reservationWeekNumber = row.length > 15 ? int.tryParse(row[15]?.value?.toString() ?? '') : null;
+          final reservationWeekday = row.length > 16 ? int.tryParse(row[16]?.value?.toString() ?? '') : null;
+          final reservationUrl = row.length > 17 ? row[17]?.value?.toString().trim() : '';
 
           final reservation = ModelCourtReservation(
             uid: uuid.v4(),
@@ -226,6 +229,8 @@ class _TabTennisCourtState extends State<TabTennisCourt> {
             reservationHour: reservationHour,
             reservationDay: reservationDay,
             daysBeforePlay: daysBeforePlay,
+            reservationWeekNumber: reservationWeekNumber,
+            reservationWeekday: reservationWeekday,
             dateCreated: Timestamp.now(),
           );
 

@@ -43,6 +43,8 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
   late final TextEditingController reservationHourController;
   late final TextEditingController reservationDayController;
   late final TextEditingController daysBeforePlayController;
+  late final TextEditingController reservationWeekNumberController;
+  late final TextEditingController reservationWeekdayController;
 
   final ValueNotifier<String?> vnImgUrl = ValueNotifier(null);
   late final ValueNotifier<ReservationRuleType?> vnRuleType;
@@ -65,6 +67,8 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
     reservationHourController = TextEditingController(text: court.reservationInfo?.reservationHour?.toString() ?? '');
     reservationDayController = TextEditingController(text: court.reservationInfo?.reservationDay?.toString() ?? '');
     daysBeforePlayController = TextEditingController(text: court.reservationInfo?.daysBeforePlay?.toString() ?? '');
+    reservationWeekNumberController = TextEditingController(text: court.reservationInfo?.reservationWeekNumber?.toString() ?? '');
+    reservationWeekdayController = TextEditingController(text: court.reservationInfo?.reservationWeekday?.toString() ?? '');
     vnImgUrl.value = (court.imageUrls!.isNotEmpty) ? court.imageUrls!.first : null;
     vnRuleType = ValueNotifier(widget.court.reservationInfo?.reservationRuleType);
   }
@@ -85,6 +89,8 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
     reservationHourController.dispose();
     reservationDayController.dispose();
     daysBeforePlayController.dispose();
+    reservationWeekNumberController.dispose();
+    reservationWeekdayController.dispose();
     vnImgUrl.dispose();
     vnRuleType.dispose();
     super.dispose();
@@ -138,12 +144,22 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
                       TextField(
                         controller: reservationDayController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: '예약 일자 (일) - 매번특정일의 경우만 작성'),
+                        decoration: const InputDecoration(labelText: '(옵션)예약 일자 (일) - 매번특정일의 경우만 작성'),
                       ),
                       TextField(
                         controller: daysBeforePlayController,
                         keyboardType: TextInputType.number,
-                        decoration: const InputDecoration(labelText: '플레이 기준 며칠 전 - 플레이어 기준 며칠전 경우만 작성'),
+                        decoration: const InputDecoration(labelText: '(옵션)플레이 기준 며칠 전 - 플레이어 기준 며칠전 경우만 작성'),
+                      ),
+                      TextField(
+                        controller: reservationWeekNumberController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: '(옵션)예약주 (몇번째주인지, 1이첫번째주) (nthWeekdayOfMonth 규칙시)'),
+                      ),
+                      TextField(
+                        controller: reservationWeekdayController,
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(labelText: '(옵션)예약 요일 (무슨요일인지, 1이월요일) (nthWeekdayOfMonth 규칙시, 1=월~7=일)'),
                       ),
                       const SizedBox(height: 8),
                     ],
@@ -299,6 +315,8 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
         keyReservationHour: int.tryParse(reservationHourController.text),
         keyReservationDay: int.tryParse(reservationDayController.text),
         keyDaysBeforePlay: int.tryParse(daysBeforePlayController.text),
+        'reservationWeekNumber': int.tryParse(reservationWeekNumberController.text),
+        'reservationWeekday': int.tryParse(reservationWeekdayController.text),
       });
       if (mounted) Navigator.of(context).pop();
       Utils.log('[OK] [코트 정보 수정 완료]');
