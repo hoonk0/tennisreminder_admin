@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:tennis_reminder_admin/ui/tab/2_tab_user_opinion.dart';
 import 'package:tennisreminder_core/const/value/colors.dart';
 import 'package:tennisreminder_core/const/value/gaps.dart';
 import 'package:tennisreminder_core/const/value/keys.dart';
@@ -81,13 +82,14 @@ class _RouteMainState extends State<RouteMain> {
                                             return TabTennisCourt(vnIsLoading: vnIsLoading,);
                                           }
 
-                                          /*
+
                                           /// 실기문제 관리
-                                          else if (renderTab == mapCategoryMenuTab[tabQuestionPractical]) {
-                                            return TabQuestionPractical(
+                                          else if (renderTab == mapCategoryMenuTab[tabUserOpinion]) {
+                                            return TabUserOpinion(
                                               vnIsLoading: vnIsLoading,
                                             );
                                           }
+                                          /*
                                           /// 심리테스트 관리
                                           else if (renderTab == mapCategoryMenuTab[tabTestPsychological]) {
                                             return TabQuestionPsychology(
