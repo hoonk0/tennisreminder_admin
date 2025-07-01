@@ -108,6 +108,52 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
             children: [
               const Text('코트 정보 수정', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
+
+              // --- Image Section moved below reservation info ---
+              ValueListenableBuilder<String?>(
+                valueListenable: vnImgUrl,
+                builder: (context, imgUrl, child) {
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: _pickFile,
+                        child: Container(
+                          width: 120,
+                          height: 160,
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                            border: Border.all(color: Colors.blue),
+                          ),
+                          child: imgUrl == null
+                              ? Center(child: Icon(Icons.add, color: Colors.blue, size: 20))
+                              : Image.network(
+                            imgUrl,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return const Center(child: CircularProgressIndicator());
+                            },
+                            errorBuilder: (context, error, stackTrace) {
+                              return const Center(child: Icon(Icons.error));
+                            },
+                          ),
+                        ),
+                      ),
+                      if (imgUrl != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 4),
+                          child: Text(
+                            Uri.decodeFull(imgUrl.split('%2F').last.split('?').first),
+                            style: TextStyle(fontSize: 12, color: Colors.black54),
+                          ),
+                        ),
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 24),
               TextField(controller: nameController, decoration: const InputDecoration(labelText: '코트명')),
               TextField(controller: addressController, decoration: const InputDecoration(labelText: '주소')),
               // --- Reservation Info Section ---
@@ -177,51 +223,7 @@ class _DialogTennisCourtEditState extends State<DialogTennisCourtEdit> {
               TextField(controller: latController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: '위도')),
               TextField(controller: lngController, keyboardType: TextInputType.number, decoration: const InputDecoration(labelText: '경도')),
               const SizedBox(height: 24),
-              // --- Image Section moved below reservation info ---
-              ValueListenableBuilder<String?>(
-                valueListenable: vnImgUrl,
-                builder: (context, imgUrl, child) {
-                  return Column(
-                    children: [
-                      InkWell(
-                        onTap: _pickFile,
-                        child: Container(
-                          width: 120,
-                          height: 160,
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(4)),
-                            border: Border.all(color: Colors.blue),
-                          ),
-                          child: imgUrl == null
-                              ? Center(child: Icon(Icons.add, color: Colors.blue, size: 20))
-                              : Image.network(
-                                  imgUrl,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return const Center(child: CircularProgressIndicator());
-                                  },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Center(child: Icon(Icons.error));
-                                  },
-                                ),
-                        ),
-                      ),
-                      if (imgUrl != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            Uri.decodeFull(imgUrl.split('%2F').last.split('?').first),
-                            style: TextStyle(fontSize: 12, color: Colors.black54),
-                          ),
-                        ),
-                    ],
-                  );
-                },
-              ),
-              const SizedBox(height: 24),
+
 
               ButtonBottom(
                 title: '저장',
